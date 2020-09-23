@@ -20,43 +20,52 @@ class CLI #=> responsible for user interaction
         end
 
         puts "Please enter a month:"
-        input_m_string = gets.strip.downcase
-        input_m_int = input_m_string.to_i
-
-        
-        until input_m.to_i >= 1 && input_m.to_i <= 12 
+        input_m = gets.strip.downcase
+        input_m = CLI.month_check(input_m)
+        until input_m.to_i >= 1 && input_m.to_i <= 12
             puts ""
             puts "Incorrect format. Please enter a month:"
             input_m = gets.strip.downcase
+            input_m =CLI.month_check(input_m)
+            #binding.pry
             
         end
+        
+    end
 
+    def self.month_check(string)
+        month = ""
+        case string
+        when "january"
+            month = "01"
+        when "february"
+            month = "02"
+        when "march"
+            month = "03"
+        when "april"
+            month = "04"
+        when "may"
+            month = "05"
+        when "june"
+            month = "06"
+        when "july"
+            month = "07"
+        when "august"
+            month = "08"
+        when "september"
+            month = "09"
+        when "october"
+            month = "10"
+        when "november"
+            month = "11"
+        when "december"
+            month = "12"
+        else
+            month = string
+        end
+        #binding.pry
+        month
     end
 
 end
 
-# if input_m == "january" || input_m == "1" || input_m == "01"
-#     input_m = "01"
-# elsif input_m == "february"
-#     input_m = "02"
-# elsif input_m == "march"
-#     input_m = "03"
-# elsif input_m == "april"
-#     input_m = "04"
-# elsif input_m == "may"
-#     input_m = "05"
-# elsif input_m == "june"
-#     input_m = "06"
-# elsif input_m == "july"
-#     input_m = "07"
-# elsif input_m == "august"
-#     input_m = "08"
-# elsif input_m == "september"
-#     input_m = "09"
-# elsif input_m == "october"
-#     input_m = "10"
-# elsif input_m == "november"
-#     input_m = "11"
-# elsif input_m == "december"
-#     input_m = "12"
-# end
