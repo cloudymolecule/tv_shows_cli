@@ -6,9 +6,12 @@ class CLI #=> responsible for user interaction
         puts ""
         puts "WELCOME TO TV SHOWS FINDER"
         puts "__________________________"
-        api_date = CLI.date_acquire
-        API.grab_shows(api_date)
-        binding.pry
+        @api_date = CLI.date_acquire
+        API.grab_shows(@api_date)
+        puts ""
+        shows = Show.all
+        print_shows(shows)
+        puts "Type a show number to get more info, or type 'exit' to exit the application."
     end
 
     def self.date_acquire #=> gets date and formats it for API
@@ -80,6 +83,22 @@ class CLI #=> responsible for user interaction
         #binding.pry
         month
     end
-
+    def print_shows(shows)
+        n_date = @api_date.split("-")
+        normal_date = []
+        normal_date << n_date[1]
+        normal_date << n_date[2]
+        normal_date << n_date[0]
+        normal_date = normal_date.join("/")
+        puts ""
+        puts "Here's a list of all TV shows aired on #{normal_date} in the USA"
+        ago = Time.new.year - n_date[0].to_i
+        puts "That was #{ago} years ago, time surely flies!"
+        puts ""
+        shows.each.with_index(1) do |s, i|
+            puts "#{i} - #{s.show_name}"
+        end
+        puts ""
+    end
 end
 
