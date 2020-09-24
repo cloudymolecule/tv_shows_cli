@@ -1,6 +1,6 @@
-class API #=> responsible for getting data from API
+class API 
     
-    def self.grab_shows(date)
+    def self.grab_shows(date) #=> responsible for getting data from the API by date 
         url = "http://api.tvmaze.com/schedule?country=US&date=#{date}"
         uri = URI(url)
         response = Net::HTTP.get(uri)

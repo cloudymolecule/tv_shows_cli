@@ -1,7 +1,7 @@
 class CLI #=> responsible for user interaction
     #attr_accessor :api_date
 
-    def start
+    def start #=> initiates the CLI
         puts "__________________________"
         puts ""
         puts "WELCOME TO TV SHOWS FINDER"
@@ -12,13 +12,17 @@ class CLI #=> responsible for user interaction
         shows = Show.all
         print_shows(shows)
         puts "Type a show number to get more info, or type 'exit' to exit the application."
+        input = gets.strip.downcase
+        while input != "exit" do
+
+        end
     end
 
     def self.date_acquire #=> gets date and formats it for API
         puts ""
         puts "Please enter a year between 1950 and #{Time.new.year}:"
         input_y = gets.strip
-        until input_y.length == 4 && input_y.to_i != 0 && input_y.to_i >= 1950 && input_y.to_i <= Time.new.year 
+        until input_y.length == 4 && input_y.to_i != 0 && input_y.to_i >= 1950 && input_y.to_i <= Time.new.year do
             puts ""
             puts "Incorrect format. Please enter a year between 1950 and #{Time.new.year}:"
             input_y = gets.strip   
@@ -80,10 +84,10 @@ class CLI #=> responsible for user interaction
         else
             month = string
         end
-        #binding.pry
         month
     end
-    def print_shows(shows)
+
+    def print_shows(shows) #=> puts the TV show and the episode aired that day
         n_date = @api_date.split("-")
         normal_date = []
         normal_date << n_date[1]
@@ -93,12 +97,13 @@ class CLI #=> responsible for user interaction
         puts ""
         puts "Here's a list of all TV shows aired on #{normal_date} in the USA"
         ago = Time.new.year - n_date[0].to_i
-        puts "That was #{ago} years ago, time surely flies!"
+        puts "That was #{ago} years ago, time sure flies!"
         puts ""
         shows.each.with_index(1) do |s, i|
-            puts "#{i} - #{s.show_name}"
+            puts "#{i} - #{s.show_name} | Episode: '#{s.ep_name}'"
         end
         puts ""
     end
+
 end
 
