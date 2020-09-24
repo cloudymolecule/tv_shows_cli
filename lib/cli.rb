@@ -8,8 +8,9 @@ class CLI #=> responsible for user interaction
         puts "__________________________"
         api_date = CLI.date_acquire
         API.grab_shows(api_date)
+        binding.pry
     end
-    
+
     def self.date_acquire #=> gets date and formats it for API
         puts ""
         puts "Please enter a year between 1950 and #{Time.new.year}:"
