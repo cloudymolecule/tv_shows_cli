@@ -19,12 +19,18 @@ class CLI #=> responsible for user interaction
                 puts "TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'EXIT' TO EXIT THE APPLICATION."
                 input = gets.strip.downcase
             elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
+                i = input
                 print_show_summary(input)
                 puts "TYPE:"
                 puts "'EPISODE' to get info on that specific episode"
                 puts "'CAST' to see the show's cast"
                 puts "'BACK' to go back to the show's list for #{date_normalizer}"
                 input = gets.strip.downcase
+                if input == "episode"
+                    print_episode_summary(i)
+                    puts "'BACK' to go back to the show's list for #{date_normalizer}"
+                    input = gets.strip.downcase
+                end
             end
             
             
@@ -111,17 +117,11 @@ class CLI #=> responsible for user interaction
     end
 
     def print_shows(shows) #=> prints a list of the the TV shows and the episodes aired that day
-        # n_date = @api_date.split("-")
-        # normal_date = []
-        # normal_date << n_date[1]
-        # normal_date << n_date[2]
-        # normal_date << n_date[0]
-        # normal_date = normal_date.join("/")
         puts ""
         puts "------------------------------------------------------------"
         puts "HERE'S A LIST OF ALL TV SHOWS AIRED ON #{date_normalizer} IN THE USA"
         ago = Time.new.year - date_normalizer.split("/")[2].to_i
-        puts "THAT WAS #{ago} YEARS AGO, TIME SURE FLIES!"
+        puts "        THAT WAS #{ago} YEARS AGO, TIME SURE FLIES!"
         puts "------------------------------------------------------------"
         puts ""
         shows.each.with_index(1) do |s, i|
@@ -131,12 +131,37 @@ class CLI #=> responsible for user interaction
     end
 
     def print_show_summary(show) #=> puts a specific show's summary
-        sh_summary = Show.all[show.to_i - 1].show_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
-        puts "-------------"
-        puts "SHOW SUMMARY:"
-        puts "-------------"
-        puts sh_summary
-        puts ""
+        if Show.all[show.to_i - 1].show_sum == "" 
+            puts ""
+            puts "-------------------------------------------------"
+            puts "   Sorry, this show doesn't include a summary."
+            puts "Please type 'back' to go back to the show listing"
+            puts "-------------------------------------------------"
+        else
+            sh_summary = Show.all[show.to_i - 1].show_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
+            puts "---------------------------------"
+            puts "#{Show.all[show.to_i].show_name} | summary:"
+            puts "---------------------------------"
+            puts sh_summary
+            puts ""
+        end
+    end
+
+    def print_episode_summary(episode)
+        if Show.all[episode.to_i - 1].ep_sum == ""
+            puts ""
+            puts "-------------------------------------------------"
+            puts " Sorry, this episode doesn't include a summary."
+            puts "Please type 'back' to go back to the show listing"
+            puts "-------------------------------------------------" 
+        else 
+            ep_summary = Show.all[episode.to_i - 1].ep_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
+            puts "---------------------------------"
+            puts "#{Show.all[episode.to_i].ep_name} | summary:" 
+            puts "---------------------------------"
+            puts ep_summary
+            puts ""
+        end
     end
 
 end
