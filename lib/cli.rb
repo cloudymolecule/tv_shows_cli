@@ -14,11 +14,15 @@ class CLI #=> responsible for user interaction
         puts "Type a show number to get more info, or type 'exit' to exit the application."
         input = gets.strip.downcase
         while input != "exit" do
-            if input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
+            if input == "info"
+                #binding.pry
+                input = gets.strip.downcase
+            elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
                 print_show_details(input)
-                #puts a.show_sum
-                input = gets.strip.downcase.to_i
+                input = gets.strip.downcase
             end
+            
+            
         end
     end
 
@@ -99,9 +103,11 @@ class CLI #=> responsible for user interaction
         normal_date << n_date[0]
         normal_date = normal_date.join("/")
         puts ""
+        puts "------------------------------------------------------------"
         puts "Here's a list of all TV shows aired on #{normal_date} in the USA"
         ago = Time.new.year - n_date[0].to_i
         puts "That was #{ago} years ago, time sure flies!"
+        puts "------------------------------------------------------------"
         puts ""
         shows.each.with_index(1) do |s, i|
             puts "#{i} - #{s.show_name} | Episode: '#{s.ep_name}'"
@@ -110,12 +116,13 @@ class CLI #=> responsible for user interaction
     end
 
     def print_show_details(show)
-        sh_summary = Show.all[show.to_i - 1].show_sum.split("<b>").join("").split("<p>").join("").split("</p>").join("").split("</b>").join("").split("</i>").join("").split("<i>").join("")
-        #I'm going to use gsub instead ^^
-        puts ""
+        sh_summary = Show.all[show.to_i - 1].show_sum.gsub!(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
+        puts "-------------"
+        puts "SHOW SUMMARY:"
+        puts "-------------"
         puts sh_summary
         puts ""
-        #binding.pry
+        
     end
 
 end
