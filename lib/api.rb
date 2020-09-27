@@ -16,4 +16,17 @@ class API
         end
         
     end
+
+    def self.grab_cast(id)
+        url = "http://api.tvmaze.com/shows/#{id}/cast"
+        uri = URI(url)
+        response = Net::HTTP.get(uri)
+        cast = JSON.parse(response)
+        cast.each do |cazt|
+            Cast.new(
+                act_name: cazt["person"]["name"], #=> actor/actress name
+                act_char: cazt["character"]["name"], #=> actor/actress character
+            )
+        end
+    end
 end
