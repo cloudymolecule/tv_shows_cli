@@ -26,7 +26,7 @@ class CLI #=> responsible for user interaction
                 puts ColorizedString["TYPE:"].colorize(:yellow)
                 puts ColorizedString["'episode' to get info on that specific episode"].colorize(:yellow)
                 puts ColorizedString["'cast' to see the show's cast"].colorize(:yellow)
-                puts ColorizedString["'back to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
+                puts ColorizedString["'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
                 puts "awaiting input..."
                 input = gets.strip.downcase
                 if input == "episode" && @i != nil
@@ -46,6 +46,7 @@ class CLI #=> responsible for user interaction
                 end
                 puts ""
                 print_cast(cast)
+                puts ColorizedString["Type 'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
                 puts "awaiting input..."
                 input = gets.strip.downcase
             else
@@ -234,7 +235,7 @@ class CLI #=> responsible for user interaction
         else
             puts ""
             puts "-----------------------------------------------------------".colorize(:yellow)
-            puts ColorizedString["HERE'S A LIST OF THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}."].colorize(:yellow)
+            puts ColorizedString["HERE'S THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}."].colorize(:yellow)
             puts "-----------------------------------------------------------".colorize(:yellow)
             puts ""
             cast.each.with_index(1) do |c, i|
