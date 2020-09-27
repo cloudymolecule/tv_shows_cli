@@ -21,6 +21,7 @@ class CLI #=> responsible for user interaction
                 input = gets.strip.downcase
             elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
                 @i = input
+                @id = Show.all[@i.to_i - 1].show_id
                 print_show_summary(input)
                 puts "TYPE:"
                 puts "'EPISODE' to get info on that specific episode"
@@ -28,7 +29,7 @@ class CLI #=> responsible for user interaction
                 puts "'BACK' to go back to the show's list for #{date_normalizer}"
                 puts "awaiting input..."
                 input = gets.strip.downcase
-                if input == "episode"
+                if input == "episode" && @i != nil
                     print_episode_summary(@i)
                     puts "TYPE:"
                     puts "'BACK' to go back to the show's list for #{date_normalizer}"
@@ -36,14 +37,18 @@ class CLI #=> responsible for user interaction
                     puts "awaiting input..."
                     input = gets.strip.downcase
                 end
-            elsif input == "cast"
-                API.grab_cast(@i)
-                cast = Cast.all
+            elsif input == "cast" && @i != nil
+                if Show.all[@i.to_i - 1].cast == []
+                    API.grab_cast(Show.all[@i.to_i - 1].show_id)
+                    cast = Show.all[@i.to_i - 1].cast
+                else
+                    cast = Show.all[@i.to_i - 1].cast
+                end
+                
                 puts ""
                 print_cast(cast)
                 puts "awaiting input..."
                 input = gets.strip.downcase
-                #binding.pry #we are here
             else
                 puts "Incorrect input, please try again"
                 puts "awaiting input..."
@@ -206,7 +211,7 @@ class CLI #=> responsible for user interaction
     def print_cast(cast)
         puts ""
         puts "------------------------------------------------------------"
-        puts "HERE'S A LIST OF THE CAST FOR."
+        puts "HERE'S A LIST OF THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}."
         puts "------------------------------------------------------------"
         puts ""
         cast.each.with_index(1) do |c, i|

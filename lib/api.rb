@@ -14,7 +14,6 @@ class API
                 show_sum: show["show"]["summary"] #=>show summary
                 )
         end
-        
     end
 
     def self.grab_cast(id)
@@ -23,9 +22,10 @@ class API
         response = Net::HTTP.get(uri)
         cast = JSON.parse(response)
         cast.each do |cazt|
-            Cast.new(
+            kazt = Cast.new(
+                show_id: id,
                 act_name: cazt["person"]["name"], #=> actor/actress name
-                act_char: cazt["character"]["name"], #=> actor/actress character
+                act_char: cazt["character"]["name"] #=> actor/actress character
             )
         end
     end
