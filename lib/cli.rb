@@ -89,7 +89,7 @@ class CLI #=> responsible for user interaction
             input_m = month_check(input_m)
             until input_m.to_i >= 1 && input_m.to_i <= Time.now.month
                 puts ""
-                puts ColorizedString["INCORRECT FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
+                puts ColorizedString["INCORRECT MONTH OR FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
                 input_m = gets.strip.downcase
                 input_m = month_check(input_m)    
             end
@@ -98,7 +98,7 @@ class CLI #=> responsible for user interaction
             input_m = month_check(input_m)
             until input_m.to_i >= 1 && input_m.to_i <= 12
                 puts ""
-                puts ColorizedString["INCORRECT FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
+                puts ColorizedString["INCORRECT MONTH OR FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
                 input_m = gets.strip.downcase
                 input_m = month_check(input_m)    
             end
@@ -109,13 +109,13 @@ class CLI #=> responsible for user interaction
         if input_y.to_i == Time.now.year && input_m.to_i == Time.now.month
             until input_d.length >= 1 && input_d.length <= 2  && input_d.to_i != 0 && input_d.to_i <= Time.now.day
                 puts ""
-                puts ColorizedString["INCORRECT FORMAT. PLEASE ENTER A DAY OF THE MONTH:"].colorize(:red)
+                puts ColorizedString["INCORRECT DAY OR FORMAT. PLEASE ENTER A DAY OF THE MONTH:"].colorize(:red)
                 input_d = gets.strip   
             end
         else
             until input_d.length >= 1 && input_d.length <= 2  && input_d.to_i != 0 && input_d.to_i <= 31
                 puts ""
-                puts ColorizedString["INCORRECT FORMAT. PLEASE ENTER A DAY OF THE MONTH:"].colorize(:red)
+                puts ColorizedString["INCORRECT DAY OR FORMAT. PLEASE ENTER A DAY OF THE MONTH:"].colorize(:red)
                 input_d = gets.strip   
             end
         end
