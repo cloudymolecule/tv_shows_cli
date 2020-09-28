@@ -66,9 +66,11 @@ class CLI #=> responsible for user interaction
         end
         puts "___________________________________________".colorize(:yellow)
         puts ""
-        puts ColorizedString["I HOPE YOU FOUND WHAT YOU WERE LOOKING FOR"].colorize(:color => :yellow, :background => :blue)
+        puts ColorizedString["I HOPE YOU FOUND WHAT YOU WERE LOOKING FOR "].colorize(:color => :yellow, :background => :blue)
         puts ColorizedString["             HAVE A NICE DAY!              "].colorize(:color => :yellow, :background => :blue)
         puts "___________________________________________".colorize(:yellow)
+        puts ""
+        puts ""
     end
 
     def date_acquire #=> gets date and formats it for API
@@ -204,6 +206,7 @@ class CLI #=> responsible for user interaction
             shows.each.with_index(1) do |s, i|
                 puts "#{i} - #{s.show_name} | Episode: '#{s.ep_name}'"
             end
+            puts ""
             puts ColorizedString["TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'exit' TO EXIT THE PROGRAM"].colorize(:yellow)
             puts ""
             puts "awaiting input..."
@@ -214,10 +217,10 @@ class CLI #=> responsible for user interaction
     def print_show_summary(show) #=> puts a specific show's summary
         if Show.all[show.to_i - 1].show_sum == "" || Show.all[show.to_i - 1].show_sum == nil
             puts ""
-            puts "-------------------------------------------------".colorize(:yellow)
+            puts "---------------------------------------------------".colorize(:yellow)
             puts ColorizedString["    Sorry, this show doesn't include a summary"].colorize(:red)
             puts ColorizedString[" Please type 'back' to go back to the show listing"].colorize(:yellow)
-            puts "-------------------------------------------------".colorize(:yellow)
+            puts "---------------------------------------------------".colorize(:yellow)
             puts ""
         else
             sh_summary = Show.all[show.to_i - 1].show_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
@@ -235,10 +238,10 @@ class CLI #=> responsible for user interaction
     def print_episode_summary(episode) #=> puts a specific episode summary
         if Show.all[episode.to_i - 1].ep_sum == "" || Show.all[episode.to_i - 1].ep_sum == nil
             puts ""
-            puts "-------------------------------------------------".colorize(:yellow)
+            puts "---------------------------------------------------".colorize(:yellow)
             puts ColorizedString["  Sorry, this episode doesn't include a summary"].colorize(:red)
             puts ColorizedString[" Please type 'back' to go back to the show listing"].colorize(:yellow)
-            puts "-------------------------------------------------" .colorize(:yellow)
+            puts "---------------------------------------------------" .colorize(:yellow)
             puts ""
         else 
             ep_summary = Show.all[episode.to_i - 1].ep_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
@@ -264,11 +267,11 @@ class CLI #=> responsible for user interaction
         else
             puts ""
             puts "-----------------------------------------------------------".colorize(:yellow)
-            puts ColorizedString["HERE'S THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}"].colorize(:light_blue)
+            puts ColorizedString["Here's the cast for: '#{Show.all[@i.to_i - 1].show_name}'"].colorize(:light_blue)
             puts "-----------------------------------------------------------".colorize(:yellow)
             puts ""
             cast.each.with_index(1) do |c, i|
-                puts "#{i} - NAME: #{c.act_name} | CHARACTER: #{c.act_char}"
+                puts "#{i} - NAME: '#{c.act_name}' | CHARACTER: '#{c.act_char}'"
                 puts ""
             end
             puts "-----------------------------------------------------------".colorize(:yellow)
