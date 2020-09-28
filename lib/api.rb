@@ -14,7 +14,6 @@ class API
                 show_sum: show["show"]["summary"] #=>show summary
                 )
         end
-        #binding.pry
     end
 
     def self.grab_cast(id)
@@ -29,6 +28,5 @@ class API
                 act_char: cazt["character"]["name"] #=> actor/actress character
             )
         end
-        #binding.pry
     end
 end
