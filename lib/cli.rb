@@ -17,6 +17,7 @@ class CLI #=> responsible for user interaction
                 puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
+
             elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
                 @i = input
                 @id = Show.all[@i.to_i - 1].show_id
@@ -29,7 +30,8 @@ class CLI #=> responsible for user interaction
                 puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
-                if input == "episode" && @i != nil
+
+            elsif input == "episode" && @i != nil
                     print_episode_summary(@i)
                     puts ColorizedString["TYPE:"].colorize(:yellow)
                     puts ColorizedString["'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
@@ -38,7 +40,7 @@ class CLI #=> responsible for user interaction
                     puts ""
                     puts "awaiting input..."
                     input = gets.strip.downcase
-                end
+
             elsif input == "cast" && @i != nil
                 if Show.all[@i.to_i - 1].cast == []
                     API.grab_cast(Show.all[@i.to_i - 1].show_id)
@@ -173,7 +175,7 @@ class CLI #=> responsible for user interaction
         month
     end
 
-    def date_normalizer #=> turns API formated date into a readable format
+    def date_normalizer #=> turns API formated date into a readable format for puts
         n_date = @api_date.split("-")
         normal_date = []
         normal_date << n_date[1]
@@ -220,11 +222,12 @@ class CLI #=> responsible for user interaction
         else
             sh_summary = Show.all[show.to_i - 1].show_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
             puts ""
-            puts "---------------------------------".colorize(:yellow)
-            puts ColorizedString["#{Show.all[show.to_i - 1].show_name} | summary:"].colorize(:light_blue)
-            puts "---------------------------------".colorize(:yellow)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
+            puts ColorizedString["Show summary: '#{Show.all[show.to_i - 1].show_name}'"].colorize(:light_blue)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
             width = 80
             puts sh_summary.scan(/\S.{0,#{width}}\S(?=\s|$)|\S+/)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
             puts ""
         end
     end
@@ -240,11 +243,12 @@ class CLI #=> responsible for user interaction
         else 
             ep_summary = Show.all[episode.to_i - 1].ep_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
             puts ""
-            puts "---------------------------------".colorize(:yellow)
-            puts ColorizedString["#{Show.all[episode.to_i - 1].ep_name} | summary:"].colorize(:light_blue)
-            puts "---------------------------------".colorize(:yellow)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
+            puts ColorizedString["Show: '#{Show.all[episode.to_i - 1].show_name}' | Episode summary: '#{Show.all[episode.to_i - 1].ep_name}'"].colorize(:light_blue)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
             width = 80
             puts ep_summary.scan(/\S.{0,#{width}}\S(?=\s|$)|\S+/)
+            puts "--------------------------------------------------------------------------------".colorize(:yellow)
             puts ""
         end
     end
@@ -265,9 +269,9 @@ class CLI #=> responsible for user interaction
             puts ""
             cast.each.with_index(1) do |c, i|
                 puts "#{i} - NAME: #{c.act_name} | CHARACTER: #{c.act_char}"
-                puts "-----------------------------------------------------------".colorize(:yellow)
+                puts ""
             end
-            puts ""
+            puts "-----------------------------------------------------------".colorize(:yellow)
         end
     end
 
