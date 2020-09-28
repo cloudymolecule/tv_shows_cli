@@ -2,18 +2,19 @@ class CLI #=> responsible for user interaction
 
     def start #=> initiates the CLI                                                                                                                                                                                      
         welcome_banner
+        puts ""
         @api_date = date_acquire
         API.grab_shows(@api_date)
         shows = Show.all
         puts ""
         print_shows(shows)
-        puts ColorizedString["TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'EXIT' TO EXIT THE APPLICATION."].colorize(:yellow)
-        puts "awaiting input..."
+
         input = gets.strip.downcase
         while input != "exit" do
             if input == "back"
                 print_shows(shows)
-                puts ColorizedString["TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'EXIT' TO EXIT THE APPLICATION."].colorize(:yellow)
+                puts ColorizedString["TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'exit' TO EXIT THE PROGRAM"].colorize(:yellow)
+                puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
             elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
@@ -24,6 +25,8 @@ class CLI #=> responsible for user interaction
                 puts ColorizedString["'episode' to get info on that specific episode"].colorize(:yellow)
                 puts ColorizedString["'cast' to see the show's cast"].colorize(:yellow)
                 puts ColorizedString["'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
+                puts ColorizedString["'exit' to exit the program"].colorize(:yellow)
+                puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
                 if input == "episode" && @i != nil
@@ -31,6 +34,8 @@ class CLI #=> responsible for user interaction
                     puts ColorizedString["TYPE:"].colorize(:yellow)
                     puts ColorizedString["'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
                     puts ColorizedString["'cast' to get the show's cast"].colorize(:yellow)
+                    puts ColorizedString["'exit' to exit the program"].colorize(:yellow)
+                    puts ""
                     puts "awaiting input..."
                     input = gets.strip.downcase
                 end
@@ -43,11 +48,15 @@ class CLI #=> responsible for user interaction
                 end
                 puts ""
                 print_cast(cast)
-                puts ColorizedString["Type 'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
+                puts ColorizedString["TYPE:"].colorize(:yellow)
+                puts ColorizedString["'back' to go back to the show's list for #{date_normalizer}"].colorize(:yellow)
+                puts ColorizedString["'exit' to exit the program"].colorize(:yellow)
+                puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
             else
                 puts ColorizedString["Incorrect input, please try again"].colorize(:red)
+                puts ""
                 puts "awaiting input..."
                 input = gets.strip.downcase
             end
@@ -55,7 +64,7 @@ class CLI #=> responsible for user interaction
         end
         puts "___________________________________________".colorize(:yellow)
         puts ""
-        puts ColorizedString["I HOPE YOU FOUND WHAT YOU WERE LOOKING FOR."].colorize(:color => :yellow, :background => :blue)
+        puts ColorizedString["I HOPE YOU FOUND WHAT YOU WERE LOOKING FOR"].colorize(:color => :yellow, :background => :blue)
         puts ColorizedString["             HAVE A NICE DAY!              "].colorize(:color => :yellow, :background => :blue)
         puts "___________________________________________".colorize(:yellow)
     end
@@ -164,7 +173,7 @@ class CLI #=> responsible for user interaction
         month
     end
 
-    def date_normalizer
+    def date_normalizer #=> turns API formated date into a readable format
         n_date = @api_date.split("-")
         normal_date = []
         normal_date << n_date[1]
@@ -174,16 +183,28 @@ class CLI #=> responsible for user interaction
         normal_date
     end
 
-    def print_shows(shows) #=> prints a list of the the TV shows and the episodes aired that day
-        puts ""
-        puts "------------------------------------------------------------".colorize(:yellow)
-        puts ColorizedString["HERE'S A LIST OF ALL TV SHOWS AIRED ON #{date_normalizer} IN THE USA."].colorize(:light_blue)
-        ago = Time.now.year - date_normalizer.split("/")[2].to_i
-        puts ColorizedString["        THAT WAS #{ago} YEARS AGO, TIME SURE FLIES!"].colorize(:light_blue)
-        puts "------------------------------------------------------------".colorize(:yellow)
-        puts ""
-        shows.each.with_index(1) do |s, i|
-            puts "#{i} - #{s.show_name} | Episode: '#{s.ep_name}'"
+    def print_shows(shows) #=> puts a list of the the TV shows and the episodes aired that day
+        if Show.all == []  
+            puts ""
+            puts "-------------------------------------------------".colorize(:yellow)
+            puts ColorizedString[" Sorry, this date doesn't include any shows"].colorize(:red)
+            puts ColorizedString["  Please type 'exit' to exit the program"].colorize(:yellow)
+            puts "-------------------------------------------------".colorize(:yellow)
+            puts ""
+        else  
+            puts ""
+            puts "------------------------------------------------------------".colorize(:yellow)
+            puts ColorizedString["HERE'S A LIST OF ALL TV SHOWS AIRED ON #{date_normalizer} IN THE USA"].colorize(:light_blue)
+            ago = Time.now.year - date_normalizer.split("/")[2].to_i
+            puts ColorizedString["        THAT WAS #{ago} YEARS AGO, TIME SURE FLIES!"].colorize(:light_blue)
+            puts "------------------------------------------------------------".colorize(:yellow)
+            puts ""
+            shows.each.with_index(1) do |s, i|
+                puts "#{i} - #{s.show_name} | Episode: '#{s.ep_name}'"
+            end
+            puts ColorizedString["TYPE A SHOW NUMBER TO GET MORE INFO, OR TYPE 'exit' TO EXIT THE PROGRAM"].colorize(:yellow)
+            puts ""
+            puts "awaiting input..."
         end
         puts ""
     end
@@ -192,47 +213,54 @@ class CLI #=> responsible for user interaction
         if Show.all[show.to_i - 1].show_sum == "" || Show.all[show.to_i - 1].show_sum == nil
             puts ""
             puts "-------------------------------------------------".colorize(:yellow)
-            puts ColorizedString["   Sorry, this show doesn't include a summary."].colorize(:red)
-            puts ColorizedString["Please type 'back' to go back to the show listing"].colorize(:yellow)
+            puts ColorizedString["    Sorry, this show doesn't include a summary"].colorize(:red)
+            puts ColorizedString[" Please type 'back' to go back to the show listing"].colorize(:yellow)
             puts "-------------------------------------------------".colorize(:yellow)
+            puts ""
         else
             sh_summary = Show.all[show.to_i - 1].show_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
+            puts ""
             puts "---------------------------------".colorize(:yellow)
             puts ColorizedString["#{Show.all[show.to_i - 1].show_name} | summary:"].colorize(:light_blue)
             puts "---------------------------------".colorize(:yellow)
-            puts sh_summary
+            width = 80
+            puts sh_summary.scan(/\S.{0,#{width}}\S(?=\s|$)|\S+/)
             puts ""
         end
     end
 
-    def print_episode_summary(episode)
+    def print_episode_summary(episode) #=> puts a specific episode summary
         if Show.all[episode.to_i - 1].ep_sum == "" || Show.all[episode.to_i - 1].ep_sum == nil
             puts ""
             puts "-------------------------------------------------".colorize(:yellow)
-            puts ColorizedString[" Sorry, this episode doesn't include a summary."].colorize(:red)
-            puts ColorizedString["Please type 'back' to go back to the show listing"].colorize(:yellow)
+            puts ColorizedString["  Sorry, this episode doesn't include a summary"].colorize(:red)
+            puts ColorizedString[" Please type 'back' to go back to the show listing"].colorize(:yellow)
             puts "-------------------------------------------------" .colorize(:yellow)
+            puts ""
         else 
             ep_summary = Show.all[episode.to_i - 1].ep_sum.gsub(/<("[^"]*"|'[^']*'|[^'">])*>/, "")
+            puts ""
             puts "---------------------------------".colorize(:yellow)
             puts ColorizedString["#{Show.all[episode.to_i - 1].ep_name} | summary:"].colorize(:light_blue)
             puts "---------------------------------".colorize(:yellow)
-            puts ep_summary
+            width = 80
+            puts ep_summary.scan(/\S.{0,#{width}}\S(?=\s|$)|\S+/)
             puts ""
         end
     end
 
-    def print_cast(cast)
+    def print_cast(cast) #=> puts a specific show cast
         if cast == []
             puts ""
             puts "-------------------------------------------------".colorize(:yellow)
-            puts ColorizedString["    Sorry, this show doesn't include a cast.     "].colorize(:red)
-            puts ColorizedString["Please type 'back' to go back to the show listing"].colorize(:yellow)
+            puts ColorizedString["     Sorry, this show doesn't include a cast     "].colorize(:red)
+            puts ColorizedString[" Please type 'back' to go back to the show listing"].colorize(:yellow)
             puts "-------------------------------------------------".colorize(:yellow)
+            puts ""
         else
             puts ""
             puts "-----------------------------------------------------------".colorize(:yellow)
-            puts ColorizedString["HERE'S THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}."].colorize(:light_blue)
+            puts ColorizedString["HERE'S THE CAST FOR: #{Show.all[@i.to_i - 1].show_name.upcase}"].colorize(:light_blue)
             puts "-----------------------------------------------------------".colorize(:yellow)
             puts ""
             cast.each.with_index(1) do |c, i|
@@ -243,7 +271,7 @@ class CLI #=> responsible for user interaction
         end
     end
 
-    def welcome_banner
+    def welcome_banner #=> cherry on top :)
         puts ColorizedString['
         __      __   _                    _                                                     
         \ \    / /__| |__ ___ _ __  ___  | |_ ___                                               
