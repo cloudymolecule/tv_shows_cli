@@ -60,7 +60,6 @@ class CLI #=> responsible for user interaction
                 puts "awaiting input..."
                 input = gets.strip.downcase
             end
-            
         end
         puts "___________________________________________".colorize(:yellow)
         puts ""
@@ -71,6 +70,8 @@ class CLI #=> responsible for user interaction
         puts ""
     end
 
+    private
+    
     def date_acquire #=> gets date and formats it for API
         puts ""
         puts ColorizedString["PLEASE ENTER A YEAR BETWEEN 1950 AND #{Time.now.year}:"].colorize(:yellow)
