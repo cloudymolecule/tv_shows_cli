@@ -19,7 +19,6 @@ class CLI #=> responsible for user interaction
 
             elsif input.to_i <= Show.all.count && input.to_i != 0 && input.to_i >= 1
                 @i = input
-                @id = Show.all[@i.to_i - 1].show_id
                 print_show_summary(input)
                 puts ColorizedString["TYPE:"].colorize(:yellow)
                 puts ColorizedString["'episode' to get info on that specific episode"].colorize(:yellow)
