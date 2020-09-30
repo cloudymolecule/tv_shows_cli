@@ -6,8 +6,7 @@ class Cast
         @show_id = show_id
         @act_name = act_name
         @act_char = act_char
-        show = find_show(@show_id)
-        show.cast << self
+        Show.find_show(@show_id).cast << self
         @@all << self
     end
 
@@ -15,7 +14,8 @@ class Cast
         @@all
     end
 
-    def find_show(id)
-        Show.all.find { |s| s.show_id == id}
+    def self.find_cast(id)
+        @@all.find { |cast| cast.show_id == id }
     end
+
 end

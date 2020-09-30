@@ -15,4 +15,8 @@ class Show
     def self.all
         @@all
     end
+    
+    def self.find_show(id)
+        Show.all.find { |s| s.show_id == id}
+    end
 end

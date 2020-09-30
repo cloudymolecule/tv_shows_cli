@@ -40,14 +40,15 @@ class CLI #=> responsible for user interaction
                     input = gets.strip.downcase
 
             elsif input == "cast" && @i != nil
-                if Show.all[@i.to_i - 1].cast == []
+                
+                if !Cast.find_cast(Show.all[@i.to_i - 1].show_id)
+
                     API.grab_cast(Show.all[@i.to_i - 1].show_id)
-                    cast = Show.all[@i.to_i - 1].cast
+                    print_cast(Show.all[@i.to_i - 1].cast)
                 else
-                    cast = Show.all[@i.to_i - 1].cast
+                    print_cast(Show.all[@i.to_i - 1].cast)
                 end
-                puts ""
-                print_cast(cast)
+
                 puts ColorizedString["TYPE:"].colorize(:yellow)
                 puts ColorizedString["'back' to go back to the shows list for #{date_normalizer}"].colorize(:yellow)
                 puts ColorizedString["'exit' to exit the program"].colorize(:yellow)
@@ -257,7 +258,8 @@ class CLI #=> responsible for user interaction
     end
 
     def print_cast(cast) #=> puts a specific show cast
-        if cast == []
+            puts ""
+        if cast[0].act_name == "none"
             puts ""
             puts "-------------------------------------------------".colorize(:yellow)
             puts ColorizedString["     Sorry, this show doesn't include a cast     "].colorize(:red)
