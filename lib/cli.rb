@@ -42,7 +42,6 @@ class CLI #=> responsible for user interaction
             elsif input == "cast" && @i != nil
                 
                 if !Cast.find_cast(Show.all[@i.to_i - 1].show_id)
-
                     API.grab_cast(Show.all[@i.to_i - 1].show_id)
                     print_cast(Show.all[@i.to_i - 1].cast)
                 else
@@ -258,8 +257,8 @@ class CLI #=> responsible for user interaction
     end
 
     def print_cast(cast) #=> puts a specific show cast
-            puts ""
         if cast[0].act_name == "none"
+            puts ""
             puts ""
             puts "-------------------------------------------------".colorize(:yellow)
             puts ColorizedString["     Sorry, this show doesn't include a cast     "].colorize(:red)
