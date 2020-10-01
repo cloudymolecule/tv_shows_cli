@@ -84,9 +84,9 @@ class CLI #=> responsible for user interaction
         end
 
         puts ColorizedString["PLEASE ENTER A MONTH:"].colorize(:yellow)
+        input_m = gets.strip.downcase
+        input_m = month_check(input_m)
         if input_y.to_i == Time.now.year
-            input_m = gets.strip.downcase
-            input_m = month_check(input_m)
             until input_m.to_i >= 1 && input_m.to_i <= Time.now.month
                 puts ""
                 puts ColorizedString["INCORRECT MONTH OR FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
@@ -94,8 +94,6 @@ class CLI #=> responsible for user interaction
                 input_m = month_check(input_m)    
             end
         else
-            input_m = gets.strip.downcase
-            input_m = month_check(input_m)
             until input_m.to_i >= 1 && input_m.to_i <= 12
                 puts ""
                 puts ColorizedString["INCORRECT MONTH OR FORMAT. PLEASE ENTER A MONTH:"].colorize(:red)
