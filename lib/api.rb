@@ -22,14 +22,14 @@ class API
         response = Net::HTTP.get(uri)
         cast = JSON.parse(response)
         if cast == []
-            kast = Cast.new(
+            Cast.new(
                 show_id: id,
                 act_name: "none",
                 act_char: "none"
                 )
         else
             cast.each do |cazt|
-                kazt = Cast.new(
+                Cast.new(
                     show_id: id,
                     act_name: cazt["person"]["name"], #=> actor/actress name
                     act_char: cazt["character"]["name"] #=> actor/actress character

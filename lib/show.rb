@@ -1,5 +1,5 @@
 class Show
-    attr_accessor :show_id, :ep_name, :show_name, :ep_sum, :show_sum, :cast
+    attr_reader :show_id, :ep_name, :show_name, :ep_sum, :show_sum, :cast
     @@all = []
 
     def initialize(show_id:, ep_name:, show_name:, ep_sum:, show_sum:)
@@ -17,6 +17,11 @@ class Show
     end
     
     def self.find_show(id)
-        Show.all.find { |s| s.show_id == id}
+        @@all.find { |s| s.show_id == id}
     end
+
+    # def self.find_cast
+    #     @@all.select { |c| c.cast.length > 1}
+    # end
 end
+

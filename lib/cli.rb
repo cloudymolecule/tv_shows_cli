@@ -255,6 +255,7 @@ class CLI #=> responsible for user interaction
     end
 
     def print_cast(cast) #=> puts a specific show cast
+        binding.pry
         if cast[0].act_name == "none"
             puts ""
             puts ""
